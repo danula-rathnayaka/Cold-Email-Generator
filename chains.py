@@ -1,5 +1,5 @@
 import os
-from langchain_groq import ChainGroq
+from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.exceptions import OutputParserException
@@ -37,7 +37,7 @@ class Chain:
             raise OutputParserException("Context too big. Unable to parse jobs.")
         return res if isinstance(res, list) else [res]
 
-    def write_eail(self, job, links):
+    def write_email(self, job, links):
         prompt_email = PromptTemplate.from_template(
             """
             ### JOB DESCRIPTION:
