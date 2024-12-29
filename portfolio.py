@@ -19,3 +19,11 @@ class Portfolio:
 
     def query_links(self, skills):
         return self.collection.query(query_texts=skills, n_results=2).get('metadatas', [])
+
+    def get_data(self):
+        return self.data
+
+    def add_data(self, techstacks, link):
+        new_entry = pd.DataFrame({"Techstack": [techstacks], "Links": [link]})
+        self.data = pd.concat([self.data, new_entry], ignore_index=True)
+        print(self.data)

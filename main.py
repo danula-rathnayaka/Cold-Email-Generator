@@ -3,6 +3,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from utils import clean_text
 from portfolio import Portfolio
 from chains import Chain
+import pandas as pd
 
 def create_streamlit_app(llm, portfolio, clean_text):
     st.title("📧 Welcome to the Cold Mail Generator!")
@@ -36,7 +37,32 @@ def create_streamlit_app(llm, portfolio, clean_text):
                 st.code(email, language='markdown')
         except Exception as e:
             st.error(f'An Error Occored: {e}')
-            print(e)
+
+    for _ in range(3):
+        st.write("")
+
+    if 'portfolio_data' not in st.session_state:
+        st.session_state.portfolio_data = portfolio.get_data()
+
+    st.subheader("Current Techstack Data")
+    st.table(st.session_state.portfolio_data)
+
+    if st.button("Refresh Table"):
+        st.session_state.portfolio_data = portfolio.get_data()
+
+    for _ in range(3):
+        st.write("")
+
+    st.subheader("Add Techstack Data")
+    with st.form("add_form"):
+        techstacks = st.text_input("Techstacks")
+        link = st.text_input("Link")
+        submitted = st.form_submit_button("Add Entry")
+        if submitted and techstacks and link:
+            portfolio.add_data(techstacks, link)
+            st.session_state.portfolio_data = portfolio.get_data()
+            st.success("Entry added!")
+
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Cold Mail Generator", layout="wide", page_icon="📧")
