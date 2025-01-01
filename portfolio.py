@@ -26,4 +26,3 @@ class Portfolio:
     def add_data(self, techstacks, link):
         new_entry = pd.DataFrame({"Techstack": [techstacks], "Links": [link]})
         self.data = pd.concat([self.data, new_entry], ignore_index=True)
-        print(self.data)
